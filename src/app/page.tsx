@@ -24,7 +24,7 @@ interface Persona {
 
 interface TopicDistribution {
   persona: string;
-  [key: string]: any; // dynamic keys for themes
+  [key: string]: string | number;
 }
 
 interface Feedback {
@@ -241,7 +241,7 @@ export default function Dashboard() {
                   cursor={{ fill: 'rgba(255,255,255,0.02)' }}
                   contentStyle={{ backgroundColor: '#0a0a0f', border: '1px solid #333', borderRadius: '12px', color: '#fff' }}
                   itemStyle={{ color: '#f8f9fa' }}
-                  formatter={(value: number, name: string, props: any) => [`${value} users (${props.payload.percentage}%)`, name]}
+                  formatter={(value: number, name: string, props: { payload: { percentage: number } }) => [`${value} users (${props.payload.percentage}%)`, name]}
                 />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={32}>
                   {personas.map((entry, index) => (
