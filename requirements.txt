@@ -9,3 +9,4 @@ langchain-huggingface
 langchain-groq
 python-dotenv
 huggingface-hub<0.26.0
+fastembed
