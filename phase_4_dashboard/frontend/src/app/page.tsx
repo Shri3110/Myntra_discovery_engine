@@ -52,11 +52,12 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
         const [statsRes, oppRes, intentRes, feedbackRes] = await Promise.all([
-          fetch('http://localhost:8000/api/stats').catch(() => null),
-          fetch('http://localhost:8000/api/opportunities').catch(() => null),
-          fetch('http://localhost:8000/api/intent-distribution').catch(() => null),
-          fetch('http://localhost:8000/api/feedback').catch(() => null)
+          fetch(`${apiUrl}/api/stats`).catch(() => null),
+          fetch(`${apiUrl}/api/opportunities`).catch(() => null),
+          fetch(`${apiUrl}/api/intent-distribution`).catch(() => null),
+          fetch(`${apiUrl}/api/feedback`).catch(() => null)
         ]);
 
         if (statsRes && statsRes.ok) {
@@ -109,7 +110,8 @@ export default function Dashboard() {
     setSearchSources([]);
     
     try {
-      const res = await fetch('http://localhost:8000/api/search', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${apiUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: searchQuery })
