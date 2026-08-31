@@ -5,7 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   Legend, Cell
 } from 'recharts';
-import { Activity, Users, Target, Search, Sparkles, MessageSquare, Tag } from 'lucide-react';
+import { Users, BarChart2, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface Stats {
@@ -72,7 +72,7 @@ export default function Dashboard() {
             reviews_processed: 1082, 
             extracted_themes: 12,
             identified_personas: 5,
-            last_updated: "2026-08-31 10:00 AM"
+            last_updated: "8/31/2026, 10:00:00 AM"
           });
           setPersonas([
             { name: "Quality Seeker", value: 450, percentage: 41.5 },
@@ -104,9 +104,14 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  const handleSearch = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
+  const handleSearch = async (e?: FormEvent, presetQuery?: string) => {
+    if (e) e.preventDefault();
+    const queryToSearch = presetQuery || searchQuery;
+    if (!queryToSearch.trim()) return;
+    
+    if (presetQuery) {
+      setSearchQuery(presetQuery);
+    }
     
     setIsSearching(true);
     setAiResponse("");
@@ -117,7 +122,7 @@ export default function Dashboard() {
       const res = await fetch(`${apiUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: searchQuery })
+        body: JSON.stringify({ query: queryToSearch })
       });
       
       const data = await res.json();
@@ -130,51 +135,99 @@ export default function Dashboard() {
     }
   };
 
+  const sampleQueries = [
+    "Why do users abandon their carts?",
+    "What do people think about delivery times?",
+    "Are there complaints about missing items?"
+  ];
+
   if (loading) return (
-    <div className="flex h-screen items-center justify-center bg-[#0D0D0D] text-white">
+    <div className="flex h-screen items-center justify-center bg-[#0a0a0a] text-white">
       Loading Engine Insights...
     </div>
   );
 
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-[#f8f9fa] p-8 md:p-12 font-sans selection:bg-[#f72585] selection:text-white">
-      <header className="mb-12 animate-[fadeInDown_0.8s_ease-out_forwards]">
-        <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-br from-[#f72585] to-[#7209b7] bg-clip-text text-transparent inline-block">
-          Myntra Discovery Engine
+    <main className="min-h-screen bg-[#0a0a0a] text-gray-200 p-8 md:p-12 font-sans selection:bg-[#f72585] selection:text-white">
+      {/* Header aligned left per image */}
+      <header className="mb-10">
+        <h1 className="text-[32px] font-bold text-white mb-2 tracking-tight">
+          Myntra AI Discovery Engine
         </h1>
-        <p className="text-[#adb5bd] text-lg">AI-Powered Persona & Theme Analytics</p>
+        <p className="text-gray-400 text-[15px]">
+          Product intelligence powered by unstructured user feedback.
+        </p>
       </header>
 
-      {/* RAG Search Engine */}
-      <div className="mb-12">
-        <form className="flex items-center bg-[rgba(255,255,255,0.03)] border border-gray-800 rounded-full px-6 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.2)] focus-within:border-[#f72585] focus-within:shadow-[0_4px_20px_rgba(247,37,133,0.2)] transition-all duration-300" onSubmit={handleSearch}>
-          <Search size={20} className="text-gray-400" />
+      {/* KPI Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
+          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Total Raw Reviews</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.total_raw_reviews.toLocaleString()}</div>
+          <div className="text-[11px] text-gray-500 mt-3 font-medium">Updated: {stats?.last_updated}</div>
+        </div>
+
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
+          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Reviews Processed</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.reviews_processed.toLocaleString()}</div>
+        </div>
+
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
+          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Extracted Themes</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.extracted_themes}</div>
+        </div>
+
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
+          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Identified Personas</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.identified_personas}</div>
+        </div>
+      </div>
+
+      {/* Search Engine Container */}
+      <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-6 mb-8">
+        <form className="flex flex-col md:flex-row gap-4 mb-4" onSubmit={(e) => handleSearch(e)}>
           <input 
             type="text" 
-            className="flex-1 bg-transparent border-none text-white text-base px-4 py-2 outline-none placeholder-gray-500" 
-            placeholder="Ask the AI Product Strategist (e.g. 'What do Deal Hunters complain about?')"
+            className="flex-1 bg-[#0a0a0a] border border-[#f72585] rounded-lg px-5 py-3.5 text-white text-[15px] outline-none placeholder-gray-500 transition-colors focus:border-[#ff479d]" 
+            placeholder="Ask anything about user pain points, feature requests, or delivery..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit" className="bg-gradient-to-r from-[#f72585] to-[#7209b7] text-white rounded-full px-6 py-2 font-semibold hover:opacity-90 transition-opacity disabled:opacity-50" disabled={isSearching}>
-            {isSearching ? 'Synthesizing...' : 'Synthesize Insights'}
+          <button 
+            type="submit" 
+            className="bg-[#f72585]/10 hover:bg-[#f72585]/20 text-[#f72585] border border-[#f72585]/50 rounded-lg px-8 py-3.5 font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+            disabled={isSearching}
+          >
+            <Sparkles size={18} /> {isSearching ? 'Discovering...' : 'Discover'}
           </button>
         </form>
         
+        {/* Sample queries pills */}
+        <div className="flex flex-wrap gap-3">
+          {sampleQueries.map((query, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => handleSearch(undefined, query)}
+              className="text-[13px] text-gray-300 border border-[#2a2a2a] bg-[#1a1a1a] rounded-full px-4 py-2 hover:bg-[#2a2a2a] transition-colors"
+            >
+              "{query}"
+            </button>
+          ))}
+        </div>
+
+        {/* Search Results */}
         {aiResponse && (
-          <div className="mt-6 bg-[rgba(114,9,183,0.05)] border border-[rgba(114,9,183,0.3)] rounded-2xl p-8 animate-[fadeIn_0.5s_ease-out]">
-            <div className="flex items-center gap-2 text-[#f72585] font-semibold mb-4">
-              <Sparkles size={20} /> AI Synthesis
-            </div>
-            <div className="text-gray-200 leading-relaxed prose prose-invert max-w-none">
+          <div className="mt-8 bg-[#0a0a0a] border border-[#7209b7]/30 rounded-xl p-6">
+            <div className="text-gray-200 leading-relaxed prose prose-invert max-w-none text-[15px]">
               <ReactMarkdown>{aiResponse}</ReactMarkdown>
             </div>
             {searchSources.length > 0 && (
-              <div className="mt-6 pt-4 border-t border-[rgba(255,255,255,0.05)]">
-                <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-2 block">Sources Cited:</span>
+              <div className="mt-6 pt-4 border-t border-[#2a2a2a]">
+                <span className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold mb-3 block">Sources Cited:</span>
                 <div className="flex flex-wrap gap-2">
                   {searchSources.map((source, i) => (
-                    <span key={i} className="text-xs bg-black/40 text-gray-400 px-3 py-1 rounded-full border border-gray-800">{source}</span>
+                    <span key={i} className="text-xs bg-[#161616] text-gray-400 px-3 py-1.5 rounded border border-[#2a2a2a]">{source}</span>
                   ))}
                 </div>
               </div>
@@ -183,67 +236,28 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="bg-[rgba(255,255,255,0.03)] backdrop-blur-xl border border-gray-800 rounded-2xl p-6 transition-all hover:bg-[rgba(255,255,255,0.05)] hover:-translate-y-1 hover:shadow-2xl hover:border-[#f72585]/30 group">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Total Raw Reviews</h3>
-            <MessageSquare size={18} className="text-gray-500 group-hover:text-[#f72585] transition-colors" />
-          </div>
-          <div className="text-4xl font-extrabold text-white mb-2">{stats?.total_raw_reviews.toLocaleString()}</div>
-          <p className="text-xs text-gray-500">Last Updated: {stats?.last_updated}</p>
-        </div>
-
-        <div className="bg-[rgba(255,255,255,0.03)] backdrop-blur-xl border border-gray-800 rounded-2xl p-6 transition-all hover:bg-[rgba(255,255,255,0.05)] hover:-translate-y-1 hover:shadow-2xl hover:border-[#7209b7]/30 group">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Reviews Processed</h3>
-            <Activity size={18} className="text-gray-500 group-hover:text-[#7209b7] transition-colors" />
-          </div>
-          <div className="text-4xl font-extrabold text-[#4cc9f0] mb-2">{stats?.reviews_processed.toLocaleString()}</div>
-          <p className="text-xs text-gray-500">Successfully embedded via RAG</p>
-        </div>
-
-        <div className="bg-[rgba(255,255,255,0.03)] backdrop-blur-xl border border-gray-800 rounded-2xl p-6 transition-all hover:bg-[rgba(255,255,255,0.05)] hover:-translate-y-1 hover:shadow-2xl hover:border-[#4cc9f0]/30 group">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Extracted Themes</h3>
-            <Tag size={18} className="text-gray-500 group-hover:text-[#4cc9f0] transition-colors" />
-          </div>
-          <div className="text-4xl font-extrabold text-white mb-2">{stats?.extracted_themes}</div>
-          <p className="text-xs text-gray-500">Unique conversation clusters</p>
-        </div>
-
-        <div className="bg-[rgba(255,255,255,0.03)] backdrop-blur-xl border border-gray-800 rounded-2xl p-6 transition-all hover:bg-[rgba(255,255,255,0.05)] hover:-translate-y-1 hover:shadow-2xl hover:border-[#4361ee]/30 group">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Identified Personas</h3>
-            <Users size={18} className="text-gray-500 group-hover:text-[#4361ee] transition-colors" />
-          </div>
-          <div className="text-4xl font-extrabold text-white mb-2">{stats?.identified_personas}</div>
-          <p className="text-xs text-gray-500">Distinct user archetypes</p>
-        </div>
-      </div>
-
       {/* Main Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         
         {/* Top 5 User Personas Card */}
-        <div className="bg-[rgba(255,255,255,0.03)] border border-gray-800 rounded-2xl p-6 md:p-8">
-          <h2 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-            <Users className="text-[#f72585]" size={24} /> 
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-6">
+          <h2 className="text-[17px] font-bold mb-6 text-white flex items-center gap-2">
+            <Users className="text-blue-500" size={20} /> 
             Top 5 User Personas
           </h2>
-          <div className="h-[300px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart layout="vertical" data={personas} margin={{ top: 0, right: 30, left: 40, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="#adb5bd" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis dataKey="name" type="category" stroke="#adb5bd" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#2a2a2a" />
+                <XAxis type="number" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="#d1d5db" fontSize={12} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
                   cursor={{ fill: 'rgba(255,255,255,0.02)' }}
-                  contentStyle={{ backgroundColor: '#0a0a0f', border: '1px solid #333', borderRadius: '12px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: '#161616', border: '1px solid #2a2a2a', borderRadius: '8px', color: '#fff' }}
                   // @ts-ignore
                   formatter={(value: any, name: any, props: any) => [`${value} users (${props?.payload?.percentage}%)`, name]}
                 />
-                <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={32}>
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24}>
                   {personas.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -254,60 +268,61 @@ export default function Dashboard() {
         </div>
 
         {/* Topic Distribution by Persona Card */}
-        <div className="bg-[rgba(255,255,255,0.03)] border border-gray-800 rounded-2xl p-6 md:p-8">
-          <h2 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-            <Target className="text-[#4cc9f0]" size={24} /> 
+        <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-6">
+          <h2 className="text-[17px] font-bold mb-6 text-white flex items-center gap-2">
+            <BarChart2 className="text-green-500" size={20} /> 
             Topic Distribution by Persona
           </h2>
-          <div className="h-[300px] w-full">
+          <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topicDist} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="persona" stroke="#adb5bd" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#adb5bd" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2a2a2a" />
+                <XAxis dataKey="persona" stroke="#d1d5db" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
                   cursor={{ fill: 'rgba(255,255,255,0.02)' }}
-                  contentStyle={{ backgroundColor: '#0a0a0f', border: '1px solid #333', borderRadius: '12px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: '#161616', border: '1px solid #2a2a2a', borderRadius: '8px', color: '#fff' }}
                 />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
-                <Bar dataKey="Sizing & Fit" stackId="a" fill="#f72585" radius={[0, 0, 0, 0]} />
+                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} iconType="circle" />
+                <Bar dataKey="Sizing & Fit" stackId="a" fill="#f72585" radius={[0, 0, 0, 0]} barSize={32} />
                 <Bar dataKey="Pricing & Value" stackId="a" fill="#7209b7" radius={[0, 0, 0, 0]} />
                 <Bar dataKey="App Experience" stackId="a" fill="#4cc9f0" radius={[0, 0, 0, 0]} />
                 <Bar dataKey="Delivery & Logistics" stackId="a" fill="#4361ee" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="General Experience" stackId="a" fill="#3a0ca3" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="General Experience" stackId="a" fill="#3a0ca3" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
-
-      {/* Raw Feedback Stream */}
-      <div className="bg-[rgba(255,255,255,0.03)] border border-gray-800 rounded-2xl overflow-hidden animate-[fadeInUp_0.8s_ease-out_both_0.2s]">
-        <div className="p-6 border-b border-gray-800">
-          <h2 className="text-xl font-bold text-white">Live Feedback Stream</h2>
+      
+      {/* (Optional) Feedback Table */}
+      {/* Kept this down below so it doesn't clutter the top view */}
+      <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl overflow-hidden mt-8">
+        <div className="p-5 border-b border-[#2a2a2a]">
+          <h2 className="text-[17px] font-bold text-white">Live Feedback Stream</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-black/20">
-                <th className="p-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">User Verbatim</th>
-                <th className="p-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Source</th>
-                <th className="p-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Persona</th>
-                <th className="p-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Theme</th>
+              <tr className="bg-[#0a0a0a]">
+                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">User Verbatim</th>
+                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Source</th>
+                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Persona</th>
+                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Theme</th>
               </tr>
             </thead>
             <tbody>
               {feedback.map((item, i) => (
-                <tr key={i} className="hover:bg-white/5 border-b border-gray-800/50 transition-colors">
-                  <td className="p-4 text-sm text-gray-200">{item.text}</td>
-                  <td className="p-4 text-sm text-gray-400">{item.source}</td>
+                <tr key={i} className="hover:bg-[#1a1a1a] border-b border-[#2a2a2a] transition-colors">
+                  <td className="p-4 text-[13px] text-gray-300">{item.text}</td>
+                  <td className="p-4 text-[13px] text-gray-500">{item.source}</td>
                   <td className="p-4">
-                    <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#7209b7]/10 text-[#a544f8] border border-[#7209b7]/30">
+                    <span className="inline-block px-3 py-1 rounded-md text-[11px] font-semibold bg-[#7209b7]/20 text-[#a544f8]">
                       {item.persona}
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#4cc9f0]/10 text-[#4cc9f0] border border-[#4cc9f0]/30">
+                    <span className="inline-block px-3 py-1 rounded-md text-[11px] font-semibold bg-[#f72585]/20 text-[#ff479d]">
                       {item.theme}
                     </span>
                   </td>
