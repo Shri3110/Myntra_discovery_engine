@@ -295,43 +295,6 @@ export default function Dashboard() {
         </div>
       </div>
       
-      {/* (Optional) Feedback Table */}
-      {/* Kept this down below so it doesn't clutter the top view */}
-      <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl overflow-hidden mt-8">
-        <div className="p-5 border-b border-[#2a2a2a]">
-          <h2 className="text-[17px] font-bold text-white">Live Feedback Stream</h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-[#0a0a0a]">
-                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">User Verbatim</th>
-                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Source</th>
-                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Persona</th>
-                <th className="p-4 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Theme</th>
-              </tr>
-            </thead>
-            <tbody>
-              {feedback.map((item, i) => (
-                <tr key={i} className="hover:bg-[#1a1a1a] border-b border-[#2a2a2a] transition-colors">
-                  <td className="p-4 text-[13px] text-gray-300">{item.text}</td>
-                  <td className="p-4 text-[13px] text-gray-500">{item.source}</td>
-                  <td className="p-4">
-                    <span className="inline-block px-3 py-1 rounded-md text-[11px] font-semibold bg-[#7209b7]/20 text-[#a544f8]">
-                      {item.persona}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="inline-block px-3 py-1 rounded-md text-[11px] font-semibold bg-[#f72585]/20 text-[#ff479d]">
-                      {item.theme}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </main>
   );
 }
