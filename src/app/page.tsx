@@ -222,16 +222,6 @@ export default function Dashboard() {
             <div className="text-gray-200 leading-relaxed prose prose-invert max-w-none text-[15px]">
               <ReactMarkdown>{aiResponse}</ReactMarkdown>
             </div>
-            {searchSources.length > 0 && (
-              <div className="mt-6 pt-4 border-t border-[#2a2a2a]">
-                <span className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold mb-3 block">Sources Cited:</span>
-                <div className="flex flex-wrap gap-2">
-                  {searchSources.map((source, i) => (
-                    <span key={i} className="text-xs bg-[#161616] text-gray-400 px-3 py-1.5 rounded border border-[#2a2a2a]">{source}</span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         )}
       </div>
