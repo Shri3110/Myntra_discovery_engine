@@ -253,7 +253,9 @@ def search_insights(request: SearchRequest):
     for q, a in mock_qa_dict.items():
         q_clean = re.sub(r'[^a-z0-9]', '', q.lower())
         if query_clean == q_clean and query_clean:
-            return {"response": a, "sources": ["Test questions and answers.txt (Mocked MVP Data)"]}
+            import time
+            time.sleep(2.5)
+            return {"response": f"**✨ AI Product Strategist Insight:**\n\n{a}", "sources": ["Test questions and answers.txt (Mocked MVP Data)"]}
 
     groq_api_key = os.environ.get("GROQ_API_KEY")
     if not groq_api_key or groq_api_key == "your_groq_api_key_here":
