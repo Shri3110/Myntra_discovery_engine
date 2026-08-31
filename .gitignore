@@ -1,0 +1,7 @@
+node_modules/
+__pycache__/
+.env
+.DS_Store
+
+.next
+phase_4_dashboard/frontend/.next

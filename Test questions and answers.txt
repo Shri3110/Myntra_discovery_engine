@@ -1,0 +1,156 @@
+Why do users add fashion products to their wishlist?
+Key Findings
+One retrieved review indicates users add items to their wishlist to keep them as a "maybe" for later consideration.
+The evidence does not reveal other explicit motivations for wishlisting.
+Users acknowledge that the wishlisting action itself is easy to perform.
+Supporting Evidence
+Only one out of three retrieved reviews explicitly explains the motivation for wishlisting.
+The user states they "just keep things there as a maybe."
+The remaining reviews discuss wishlist management without explaining initial add reasons.
+Evidence Gaps
+The sample lacks insights into whether users wishlist items for price tracking or outfit planning.
+It remains unknown if this behavior reflects a broader trend or an isolated preference.
+Confidence
+Low. The retrieved sample contains only one explicit mention of wishlisting motivation, making it insufficient to establish a reliable pattern.
+
+
+What prevents wishlisted products from eventually being purchased?
+Key Findings
+One retrieved review indicates that wishlisted items disappearing after going out of stock hinders eventual purchase.
+Inconsistent sizing across brands creates uncertainty that may delay or prevent buying wishlisted items.
+The evidence is insufficient to establish the prevalence of these barriers across the broader user base.
+Supporting Evidence
+A single review explicitly states that wishlisted products "just disappear" when they go out of stock.
+The same review notes that "sizing is very weird across brands," suggesting measurement inconsistency as a potential friction point.
+Evidence Gaps
+The retrieved sample contains only one review, limiting the ability to identify additional barriers or confirm frequency.
+It remains unknown whether users actively abandon wishlists due to pricing, delivery timelines, or alternative preferences.
+Confidence
+Low. The conclusion relies on a single review, making it impossible to determine how widespread these issues are.
+
+
+What uncertainties remain after users have identified a product they like?
+Key Findings
+One retrieved review indicates concerns about product authenticity and condition upon delivery.
+A small subset of the retrieved evidence suggests uncertainty regarding the reliability of published customer reviews.
+The remaining feedback reports positive experiences without mentioning post-selection uncertainties.
+The evidence is insufficient to establish prevalent uncertainties after product selection.
+Supporting Evidence
+One review explicitly states products are "damaged, broken or pre-used" and claims reviews are censored.
+Two reviews positively confirm receiving "genuine products" with no reported uncertainties.
+Only three reviews were retrieved, limiting pattern recognition.
+Evidence Gaps
+The sample lacks detailed insights into specific post-selection decision barriers.
+It remains unknown whether authenticity concerns represent a widespread user experience.
+Confidence
+Low. The retrieved sample is too small and mixed to reliably identify post-selection uncertainties.
+
+
+What causes users to postpone a purchase?
+
+Key Findings
+The retrieved feedback is insufficient to identify causes for voluntary purchase postponement.
+Users instead report forced delays and unexplained order cancellations after payment.
+Repeated delivery extensions and automated customer support are cited as primary disruptions.
+No evidence indicates users intentionally delay purchasing due to hesitation or comparison.
+Supporting Evidence
+Four reviews describe orders being delayed, extended, or cancelled post-confirmation without clear reasons.
+One user states: "order gets delayed without any information on the day of delivery after confirming availability."
+All five reviews focus on post-purchase fulfillment failures rather than pre-purchase decision-making.
+Evidence Gaps
+The sample lacks any mention of voluntary postponement or pre-purchase barriers.
+User intent and timing of purchase delays remain unaddressed in the retrieved data.
+Confidence
+Low. The evidence exclusively documents post-purchase fulfillment failures, not voluntary postponement.
+
+
+How do users compare multiple shortlisted products?
+Key Findings
+The retrieved feedback contains no information regarding how users compare multiple shortlisted products.
+All provided reviews focus exclusively on general app satisfaction and perceived product quality.
+No evidence describes comparison features, shortlisting behaviors, or decision-making workflows.
+Supporting Evidence
+Zero reviews mention product comparison, shortlists, or evaluation criteria.
+The four retrieved comments only praise overall app quality and shopping experience.
+Evidence Gaps
+The sample lacks any user statements about comparison tools, side-by-side features, or shortlist management.
+It remains unknown whether users rely on app features, external research, or manual evaluation when comparing items.
+Confidence
+Low. The retrieved feedback is entirely unrelated to product comparison behaviors.
+
+
+What information do users seek outside Myntra/AJIO before purchasing?
+Key Findings
+The retrieved feedback contains no evidence of users seeking information outside Myntra or AJIO before purchasing.
+All provided reviews focus exclusively on positive experiences within the Myntra platform.
+No external research behaviors or cross-platform comparison needs are mentioned in the sample.
+Supporting Evidence
+Zero out of four retrieved reviews reference seeking outside information or comparing products on other platforms.
+Feedback consistently highlights internal platform strengths such as ease of use, product quality, pricing, and brand variety.
+Evidence Gaps
+The current sample lacks any data on pre-purchase research behaviors or external information needs.
+It remains unknown whether users rely on external sources, as the retrieved feedback only covers positive in-app experiences.
+Confidence
+Low. The retrieved sample contains no relevant evidence to address the question.
+
+
+What role do fit, size, styling, price, reviews, occasion and social validation play?
+Key Findings
+One retrieved review indicates that inconsistent sizing across brands causes purchase hesitation due to return hassles.
+A small subset of the retrieved evidence suggests strong user satisfaction with styling and clothing quality.
+The request for user photos points to a desire for social validation before purchasing.
+The evidence is insufficient to establish any role for price or occasion-based shopping.
+Supporting Evidence
+One review explicitly cites inaccurate size guides and return friction as conversion barriers.
+Two reviews praise the platform’s fashion styling and overall product quality.
+The single mention of user photos highlights a need for visual social proof.
+Evidence Gaps
+The sample lacks explicit mentions of how formal reviews influence decisions.
+Broader user sentiment on occasion-based shopping cannot be determined from this limited data.
+Confidence
+Low. The retrieved sample is extremely small and lacks coverage of price, occasion, and formal reviews.
+
+
+When do users use the wishlist as genuine purchase intent versus simply as a bookmarking mechanism?
+Key Findings
+One retrieved review indicates users treat the wishlist as a "maybe" bookmarking tool rather than a purchase queue.
+A small subset of the retrieved evidence suggests checkout friction may discourage conversion from bookmarking to purchase intent.
+The evidence is insufficient to establish clear triggers that shift wishlist usage from bookmarking to genuine purchase intent.
+Supporting Evidence
+One user noted they "just keep things there as a maybe" due to the unfiltered list layout.
+Another review highlighted clunky checkout processes as friction points, though purchase intent was not explicitly stated.
+Only one of three retrieved reviews directly addresses the bookmarking versus purchase intent distinction.
+Evidence Gaps
+The sample lacks explicit statements detailing conditions that trigger genuine purchase intent.
+It remains unknown whether usage patterns differ by product category.
+Confidence
+Low. The retrieved sample is too small and indirect to reliably distinguish between bookmarking and purchase intent behaviors.
+
+
+How do these behaviors differ across user segments?
+Key Findings
+The evidence is insufficient to establish how behaviors differ across user segments.
+All retrieved comments focus on general platform satisfaction, pricing, returns, customer service, or an account suspension dispute.
+No significant pattern is evident in the retrieved sample regarding demographic or usage-based group differences.
+Supporting Evidence
+Four retrieved reviews were analyzed, with three highlighting general satisfaction and one detailing an account suspension inquiry.
+None of the comments reference user segments, cohorts, or comparative behavioral patterns.
+Evidence Gaps
+The sample lacks any demographic, behavioral, or segmentation data required to address the question.
+It remains unknown how different user groups interact with the platform based on this evidence.
+Confidence
+Low. The retrieved feedback contains zero references to user segments or comparative behaviors, making it impossible to answer the question.
+
+What unmet needs emerge consistently across user conversations?
+Key Findings
+A subset of retrieved feedback indicates an unmet need for responsive customer support during post-purchase issues.
+Users report return friction when products arrive without tags but tags are required for returns.
+Positive feedback confirms app usability and product quality currently meet expectations.
+Supporting Evidence
+Three out of five retrieved reviews explicitly cite unresponsive customer care and unresolved return holds.
+One review states, “customer care team is not responding neither on chat nor on call to discuss on the issue.”
+Evidence Gaps
+The sample size is too small to determine the prevalence of support issues across the broader user base.
+No evidence addresses unmet needs related to discovery, pricing, or checkout flows.
+Confidence
+Medium. The limited sample size and negative skew prevent reliable population-level generalization.
