@@ -103,12 +103,42 @@ def get_aggregated_data():
         
     return pd.DataFrame(df_data)
 
+def enrich_with_persona_and_theme(df):
+    def assign_persona(row):
+        text = str(row.get('text', '')).lower()
+        cat = str(row.get('category', '')).lower()
+        if 'size' in text or 'fit' in cat or 'tight' in text or 'loose' in text:
+            return 'Quality Seeker'
+        if 'price' in text or 'discount' in text or 'sale' in text or 'expensive' in text:
+            return 'Deal Hunter'
+        if 'app' in text or 'glitch' in text or 'slow' in text or 'crash' in text or 'login' in text or 'worst' in text:
+            return 'App Skeptic'
+        if 'love' in text or 'good' in text or 'best' in text or 'amazing' in text or 'awesome' in text:
+            return 'Brand Loyalist'
+        return 'Trend Setter'
+
+    def assign_theme(row):
+        text = str(row.get('text', '')).lower()
+        cat = str(row.get('category', '')).lower()
+        if 'size' in text or 'fit' in cat or 'tight' in text: return 'Sizing & Fit'
+        if 'deliver' in text or 'delay' in text or 'late' in text or 'order' in text: return 'Delivery & Logistics'
+        if 'app' in text or 'bug' in text or 'crash' in text or 'login' in text: return 'App Experience'
+        if 'price' in text or 'money' in text or 'quality' in text: return 'Pricing & Value'
+        if cat and cat != 'uncategorized': return cat.title()
+        return 'General Experience'
+
+    if not df.empty:
+        df['persona'] = df.apply(assign_persona, axis=1)
+        df['theme'] = df.apply(assign_theme, axis=1)
+    return df
+
 @app.get("/api/stats")
 def get_stats():
     import json
     from datetime import datetime
     
     df = get_aggregated_data()
+    df = enrich_with_persona_and_theme(df)
     
     # Calculate raw stats
     raw_data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'phase_1_ingestion', 'data'))
@@ -138,58 +168,59 @@ def get_stats():
 
     if df.empty:
         return {
-            "total_feedback": 0, 
-            "top_barrier": "N/A", 
-            "high_intent_count": 0,
             "total_raw_reviews": total_raw,
+            "reviews_processed": 0,
+            "extracted_themes": 0,
+            "identified_personas": 0,
             "last_updated": last_updated_str
         }
         
-    top_barrier = df['category'].value_counts().idxmax() if not df['category'].empty else "N/A"
-    high_intent = len(df[df['intent_level'].str.contains('High', na=False, case=False)])
-    
     return {
-        "total_feedback": len(df),
-        "top_barrier": top_barrier,
-        "high_intent_count": high_intent,
         "total_raw_reviews": total_raw,
+        "reviews_processed": len(df),
+        "extracted_themes": df['theme'].nunique(),
+        "identified_personas": df['persona'].nunique(),
         "last_updated": last_updated_str
     }
 
-@app.get("/api/opportunities")
-def get_opportunities():
+@app.get("/api/personas")
+def get_personas():
     df = get_aggregated_data()
-    if df.empty:
-        return []
-        
-    def get_intent_weight(intent):
-        if not intent: return 1
-        intent = intent.lower()
-        if 'high' in intent: return 3
-        if 'medium' in intent: return 2
-        return 1
-        
-    df['severity_weight'] = df['intent_level'].apply(get_intent_weight)
-    grouped = df.groupby('category').agg(
-        volume=('text', 'count'),
-        avg_severity=('severity_weight', 'mean')
-    ).reset_index()
+    df = enrich_with_persona_and_theme(df)
     
-    grouped['opportunity_score'] = (grouped['volume'] * grouped['avg_severity']).round(2)
-    grouped = grouped.sort_values(by='opportunity_score', ascending=False)
-    return grouped.to_dict(orient='records')
-
-@app.get("/api/intent-distribution")
-def get_intent_distribution():
-    df = get_aggregated_data()
-    if df.empty: return []
-    dist = df['intent_level'].value_counts().reset_index()
-    dist.columns = ['intent', 'count']
-    return dist.to_dict(orient='records')
+    if df.empty:
+        return {"top_personas": [], "topic_distribution": []}
+        
+    # Top Personas Chart Data
+    persona_counts = df['persona'].value_counts()
+    total = len(df)
+    top_personas = []
+    for persona, count in persona_counts.head(5).items():
+        top_personas.append({
+            "name": persona,
+            "value": int(count),
+            "percentage": round((count / total) * 100, 1)
+        })
+        
+    # Topic Distribution by Persona Chart Data
+    # Cross-tabulate Persona and Theme
+    crosstab = pd.crosstab(df['persona'], df['theme'])
+    topic_distribution = []
+    for persona in crosstab.index:
+        row = {"persona": persona}
+        for theme in crosstab.columns:
+            row[theme] = int(crosstab.loc[persona, theme])
+        topic_distribution.append(row)
+        
+    return {
+        "top_personas": top_personas,
+        "topic_distribution": topic_distribution
+    }
 
 @app.get("/api/feedback")
 def get_feedback(limit: int = 50):
     df = get_aggregated_data()
+    df = enrich_with_persona_and_theme(df)
     if df.empty: return []
     return df.iloc[::-1].head(limit).to_dict(orient='records')
 
