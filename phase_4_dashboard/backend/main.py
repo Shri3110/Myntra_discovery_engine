@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 # LangChain Imports
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -198,7 +198,11 @@ def get_feedback(limit: int = 50):
 # Initialize global components for Search API
 import re
 try:
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = HuggingFaceEndpointEmbeddings(
+        model="sentence-transformers/all-MiniLM-L6-v2", 
+        task="feature-extraction",
+        huggingfacehub_api_token=os.environ.get("HF_TOKEN")
+    )
     llm = ChatGroq(temperature=0.2, model_name="qwen/qwen3.8-27b", max_tokens=4096)
     vectorstore = Chroma(
         collection_name="myntra_feedback",
