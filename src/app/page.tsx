@@ -163,13 +163,13 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
           <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Total Raw Reviews</div>
-          <div className="text-[32px] font-bold text-white leading-none">{stats?.total_raw_reviews.toLocaleString()}</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.total_raw_reviews?.toLocaleString() ?? 0}</div>
           <div className="text-[11px] text-gray-500 mt-3 font-medium">Updated: {stats?.last_updated}</div>
         </div>
 
         <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
           <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Reviews Processed</div>
-          <div className="text-[32px] font-bold text-white leading-none">{stats?.reviews_processed.toLocaleString()}</div>
+          <div className="text-[32px] font-bold text-white leading-none">{stats?.reviews_processed?.toLocaleString() ?? 0}</div>
         </div>
 
         <div className="bg-[#161616] border border-[#2a2a2a] rounded-xl p-5">
