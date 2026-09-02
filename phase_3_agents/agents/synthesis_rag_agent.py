@@ -19,7 +19,7 @@ def run_synthesis_query(question):
         return
 
     # Initialize Groq LLM (Mixtral)
-    llm = ChatGroq(temperature=0.2, model_name="qwen/qwen3.6-27b")
+    llm = ChatGroq(temperature=0.2, model_name="qwen/qwen3.8-27b")
     
     # Initialize the same embedding model used in Phase 2
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")

@@ -388,7 +388,7 @@ RETRIEVED USER FEEDBACK:
         result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
         
         sources = [doc.page_content for doc in retrieved_docs]
-        return {"response": result, "sources": sources}
+        return {"response": f"**✨ AI Product Strategist Insight:**\n\n{result}", "sources": sources}
         
     except Exception as e:
         return {"response": f"❌ **Error running RAG Search**: {str(e)}"}

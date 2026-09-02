@@ -54,16 +54,19 @@ def embed_data(input_dir, collection):
                     
                 metadatas.append(metadata)
                 
-                # Generate a unique ID for Chroma
-                ids.append(str(uuid.uuid4()))
+                # Generate a deterministic ID to avoid duplicates across runs
+                import hashlib
+                unique_string = f"{item.get('source', '')}_{item.get('id', '')}_{text}"
+                doc_id = hashlib.md5(unique_string.encode('utf-8')).hexdigest()
+                ids.append(doc_id)
 
     if documents:
         print(f"Embedding {len(documents)} documents into Chroma DB... This may take a moment to download the model the first time.")
         
-        # Batch inserting into ChromaDB (it automatically handles generating embeddings)
+        # Batch inserting into ChromaDB (using upsert to prevent duplicates)
         batch_size = 500
         for i in range(0, len(documents), batch_size):
-            collection.add(
+            collection.upsert(
                 documents=documents[i:i+batch_size],
                 metadatas=metadatas[i:i+batch_size],
                 ids=ids[i:i+batch_size]
