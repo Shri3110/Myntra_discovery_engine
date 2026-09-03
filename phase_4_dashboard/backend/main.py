@@ -69,6 +69,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/health")
+def health_check():
+    """Lightweight endpoint to prevent Render cold starts."""
+    return {"status": "ok", "message": "Backend is awake!"}
+
+
 def get_db_path():
     return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'phase_2_processing', 'chroma_db'))
 
