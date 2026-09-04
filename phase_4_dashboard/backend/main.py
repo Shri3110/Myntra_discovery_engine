@@ -126,11 +126,14 @@ def enrich_with_persona_and_theme(df):
     def assign_theme(row):
         text = str(row.get('text', '')).lower()
         cat = str(row.get('category', '')).lower()
-        if 'size' in text or 'fit' in cat or 'tight' in text: return 'Sizing & Fit'
-        if 'deliver' in text or 'delay' in text or 'late' in text or 'order' in text: return 'Delivery & Logistics'
-        if 'app' in text or 'bug' in text or 'crash' in text or 'login' in text: return 'App Experience'
-        if 'price' in text or 'money' in text or 'quality' in text: return 'Pricing & Value'
-        if cat and cat != 'uncategorized': return cat.title()
+        if 'size' in text or 'fit' in cat or 'tight' in text or 'loose' in text or 'small' in text or 'large' in text:
+            return 'Sizing & Fit'
+        if 'price' in text or 'discount' in text or 'sale' in text or 'expensive' in text or 'cheap' in text:
+            return 'Pricing & Value'
+        if 'app' in text or 'glitch' in text or 'slow' in text or 'crash' in text or 'login' in text or 'bug' in text:
+            return 'App Experience'
+        if 'deliver' in text or 'shipping' in text or 'late' in text or 'delay' in text or 'missing' in text or 'courier' in text:
+            return 'Delivery & Logistics'
         return 'General Experience'
 
     if not df.empty:

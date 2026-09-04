@@ -1,0 +1,65 @@
+========================================================================
+MYNTRA DISCOVERY ENGINE (AI FIT & DECISION ASSISTANT): CURRENT MVP ARCHITECTURE
+========================================================================
+Reviewer: Principal AI Architect & Machine Learning Engineer
+Date: September 2026
+
+------------------------------------------------------------------------
+1. PIPELINE VALIDITY & COMPLETENESS (CURRENT MVP)
+------------------------------------------------------------------------
+The current pipeline successfully implements a lightweight, end-to-end unstructured data-to-insights engine. The 6-stage flow accurately reflects the existing codebase:
+
+STAGE 1: Data Ingestion
+- Multi-modal Python scrapers (Reddit, YouTube, Play Store, iOS) run daily via `daily_pipeline.bat`.
+- Output: Raw unstructured JSON files stored locally.
+
+STAGE 2: Preprocessing
+- `cleaner.py` strips noise, drops invalid rows, and standardizes the text format.
+- Output: Validated JSON files in the `data_cleaned` directory.
+
+STAGE 3: Embedding & Indexing
+- `embedder.py` generates dense vector embeddings using `all-MiniLM-L6-v2` (HuggingFace).
+- Output: Deterministically indexed documents stored in a persistent local ChromaDB instance.
+
+STAGE 4: Offline Classification & Tagging
+- `classifier_agent.py` and `intent_agent.py` use Groq's `qwen3.8-27b` model to asynchronously process ChromaDB records, adding intent and category metadata.
+
+STAGE 5: On-the-Fly Theme & Persona Aggregation
+- The FastAPI backend (`main.py`) dynamically reads ChromaDB and assigns reviews into 5 macro-themes (e.g., "Sizing & Fit") and 5 distinct personas (e.g., "Quality Seeker") using a fast, rule-based keyword mapping system during data load.
+
+STAGE 6: RAG Insights Generation & Dashboard
+- When a PM searches for insights on the Next.js frontend, FastAPI triggers a Retrieval-Augmented Generation (RAG) chain. 
+- It retrieves the top 5 most relevant documents from ChromaDB and synthesizes a structured answer using Groq's `qwen3.8-27b` model.
+
+------------------------------------------------------------------------
+2. CLUSTERING & DATA PROCESSING ARCHITECTURE
+------------------------------------------------------------------------
+* Rule-Based Macro-Themes vs. ML Clustering:
+  The MVP currently utilizes a fast, deterministic keyword-bucketing function (`assign_theme`) to group reviews into 5 predefined macro-themes. This approach guarantees zero latency when rendering the dashboard and provides highly predictable, static charts for Product Managers, avoiding the unpredictability of unsupervised machine learning (like HDBSCAN) at this early stage.
+
+* Metadata Handling:
+  The MVP uses basic metadata (source and ID) to track data lineage. Offline AI agents progressively enrich this metadata with behavioral categories, allowing for flexible filtering in future iterations.
+
+------------------------------------------------------------------------
+3. LATENCY & PRODUCTION REALISM
+------------------------------------------------------------------------
+* Dashboard Load Time:
+  By performing the heavy lifting offline (Scraping, Embedding, and LLM Classification) and keeping the macro-theme bucketing simple and rule-based, the dashboard's initial load time remains incredibly fast.
+
+* Real-Time RAG Synthesis:
+  The only real-time AI invocation occurs when a specific query is executed. Because it uses Groq's ultra-fast LPU inference infrastructure to run the `qwen3.8-27b` model, the RAG synthesis response times are minimized, offering a highly responsive interactive search experience for the PM without the need for complex pre-caching infrastructure.
+
+------------------------------------------------------------------------
+4. METRICS & ENGINEERING JUSTIFICATIONS (MVP DECK)
+------------------------------------------------------------------------
+Based on the current local dataset of 1,194 processed reviews:
+
+1. Clean Data Chunks Generated: 1,194 indexed semantic chunks.
+   > Engineering Justification: The cleaner pipeline drops duplicate or invalid raw data, narrowing the 1,793 raw records down to 1,194 perfectly clean, 1:1 review-to-chunk embeddings that maximize retrieval accuracy.
+
+2. Core Fit & Sizing Themes Discovered: 5 Macro-Themes (e.g., Sizing & Fit, Pricing & Value).
+   > Engineering Justification: For MVP reliability and immediate dashboard clarity, we utilize a deterministic keyword-matching heuristic to buckle reviews into 5 rigid macro-themes, ensuring PMs see actionable high-level trends rather than noisy micro-clusters.
+
+3. Actionable RAG Insights Generated: Dynamic & On-Demand.
+   > Engineering Justification: Instead of pre-caching thousands of insights, we leverage Groq's ultra-low-latency inference to generate tailored, context-aware RAG insights strictly on-demand when the PM queries the dashboard, saving significant compute costs while maintaining UX speed.
+========================================================================
